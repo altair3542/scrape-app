@@ -20,12 +20,17 @@ class BusinessesController < ApplicationController
         ciudad = row[2]&.value
         servicios = row[3]&.value
 
-        Business.create(
+        business_params = {
           nombre: nombre,
           correo_electronico: correo_electronico,
           ciudad: ciudad,
           servicios: servicios
-        )
+        }
+
+        # Clona el campo correo_electronico en sitio_web
+        business_params[:sitio_web] = correo_electronico.split('@').last if correo_electronico.present?
+
+        Business.create(business_params)
       end
 
       redirect_to businesses_path, notice: 'Carga desde Excel exitosa.'
