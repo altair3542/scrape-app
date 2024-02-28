@@ -1,0 +1,12 @@
+<h1>Cargar Empresas desde Excel</h1>
+
+<%= form_tag create_excel_upload_businesses_path, multipart: true do %>
+  <div>
+    <%= label_tag :file, 'Seleccione un archivo Excel:' %>
+    <%= file_field_tag :file %>
+  </div>
+
+  <div>
+    <%= submit_tag 'Cargar Empresas' %>
+  </div>
+<% end %>

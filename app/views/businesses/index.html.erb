@@ -1,0 +1,34 @@
+<h1>Listado de Empresas</h1>
+
+<%= form_tag(scrape_and_save_businesses_path, method: :post) do %>
+  <%= submit_tag "Ejecutar Scraping", class: 'btn btn-primary' %>
+<% end %>
+
+<%= link_to "Cargar Empresas desde Excel", new_excel_upload_businesses_path, class: 'btn btn-warning' %>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Correo Electrónico</th>
+      <th>Ciudad</th>
+      <th>Servicios</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @businesses.each do |business| %>
+      <tr>
+        <td><%= business.nombre %></td>
+        <td><%= business.correo_electronico %></td>
+        <td><%= business.ciudad %></td>
+        <td><%= business.servicios %></td>
+        <td>
+          <%= link_to "Ver Detalles", business, class: 'btn btn-info' %>
+          <!-- Puedes agregar más acciones según tus necesidades -->
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
