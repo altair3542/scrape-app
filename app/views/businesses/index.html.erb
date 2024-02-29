@@ -1,36 +1,48 @@
-<h1>Listado de Empresas</h1>
+<div class="container mx-auto p-6">
+  <h1 class="text-4xl font-bold mb-6">Listado de Empresas</h1>
 
-<%= form_tag(scrape_and_save_businesses_path, method: :post) do %>
-  <%= submit_tag "Ejecutar Scraping", class: 'btn btn-primary' %>
-<% end %>
+  <%= form_tag(scrape_and_save_businesses_path, method: :post, class: 'mb-4') do %>
+    <%= submit_tag "Ejecutar Scraping", class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+  <% end %>
 
-<%= link_to "Cargar Empresas desde Excel", new_excel_upload_businesses_path, class: 'btn btn-warning' %>
+  <div class="flex mb-4">
+    <%= link_to "Cargar Empresas desde Excel", new_excel_upload_businesses_path, class: 'bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2' %>
+    <%= link_to "Exportar a Excel", export_to_excel_businesses_path, class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded' %>
+  </div>
 
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Correo Electrónico</th>
-      <th>Ciudad</th>
-      <th>Servicios</th>
-      <th>Sitio Web</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @businesses.each do |business| %>
-      <tr>
-        <td><%= business.nombre %></td>
-        <td><%= business.correo_electronico %></td>
-        <td><%= business.ciudad %></td>
-        <td><%= business.servicios %></td>
-        <td><%= business.sitio_web %></td>
-        <td>
-          <%= link_to "Ver Detalles", business, class: 'btn btn-info' %>
-          <!-- Puedes agregar más acciones según tus necesidades -->
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <section class="overflow-x-auto">
+    <table class="min-w-full table-auto">
+      <thead>
+        <tr>
+          <th class="w-1/6 border p-3">Nombre</th>
+          <th class="w-auto border p-3">Correo Electrónico</th>
+          <th class="w-1/6 border p-3">Ciudad</th>
+          <th class="w-2/6 border p-3">Servicios</th>
+          <th class="w-auto border p-3">Sitio Web</th>
+          <th class="w-1/6 border p-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @businesses.each do |business| %>
+          <tr>
+            <td class="border p-3"><%= business.nombre %></td>
+            <td class="border p-3 max-content-width"><%= business.correo_electronico %></td>
+            <td class="border p-3"><%= business.ciudad %></td>
+            <td class="border p-3"><%= business.servicios %></td>
+            <td class="border p-3 max-content-width">
+              <% if business.sitio_web.present? %>
+                <%= link_to business.sitio_web, "http://#{business.sitio_web}", target: '_blank', class: 'text-blue-500' %>
+              <% else %>
+                Sin sitio web
+              <% end %>
+            </td>
+            <td class="border p-3">
+              <%= link_to "Ver Detalles", business, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+              <!-- Puedes agregar más acciones según tus necesidades -->
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+</div>

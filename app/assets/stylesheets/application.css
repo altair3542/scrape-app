@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+ /* .max-content-width {
+  display: inline-block;
+  width: max-content;
+} */

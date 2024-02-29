@@ -40,6 +40,20 @@ class BusinessesController < ApplicationController
   end
 
 
+  def export_to_excel
+    @businesses = Business.all
+
+    workbook = export_excel
+    file_path = 'tmp/empresas.xlsx' # Guardamos el archivo en el sistema de archivos temporal
+
+    workbook.close
+
+    send_file file_path, filename: 'empresas.xlsx', type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  end
+
+
+
+
   def scrape_and_save
       base_url = 'https://elkit.cat/?cn-reloaded=1'
       total_pages = 2  # Puedes ajustar esto al número total de páginas que deseas raspar
@@ -88,5 +102,26 @@ class BusinessesController < ApplicationController
         )
       end
     end
+
+    def export_excel
+      workbook = WriteXLSX.new('tmp/empresas.xlsx')
+      worksheet = workbook.add_worksheet('Empresas')
+
+      # Encabezados
+      headers = ['Nombre', 'Correo Electrónico', 'Ciudad', 'Servicios', 'Sitio Web']
+      worksheet.write_row('A1', headers)
+
+      # Datos de empresas
+      row_index = 2
+      @businesses.each do |business|
+        data = [business.nombre, business.correo_electronico, business.ciudad, business.servicios, business.sitio_web]
+        worksheet.write_row("A#{row_index}", data)
+        row_index += 1
+      end
+
+      workbook
+    end
+
+
 
 end
