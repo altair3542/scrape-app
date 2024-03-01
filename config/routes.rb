@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get 'new_excel_upload'
       post 'create_excel_upload'
       get 'export_to_excel'
+      post :scrape_websites_and_phone_numbers
     end
   end
 

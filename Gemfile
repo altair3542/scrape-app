@@ -42,8 +42,6 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 gem 'roo'
 gem 'spreadsheet'
-# gem 'axlsx', '~> 2.0', '>= 2.0.1'
-# gem 'axlsx_rails', '~> 0.6.1'
 gem 'webpacker'
 gem 'tailwindcss'
 

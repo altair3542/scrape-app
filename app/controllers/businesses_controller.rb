@@ -76,6 +76,32 @@ class BusinessesController < ApplicationController
       redirect_to businesses_path
     end
 
+    def def scrape_websites_and_phone_numbers
+
+      @businesses = Business.all
+      agent = Mechanize.new
+
+      @businesses.each do |business|
+        begin
+          page = agent.get(business.sitio_web)
+
+          # Extraer el número de teléfono usando una regex
+          telefono_match = page.body.match(/(\+34\s?)?(\d{9})/)
+          telefono = telefono_match[2] if telefono_match
+
+          # Eliminar el código de país si está presente
+          telefono.sub!(/\+34\s?/, '') if telefono
+
+          # Actualizar el campo de teléfono en la base de datos
+          business.update(telefono: telefono) if telefono
+        rescue StandardError => e
+          puts "Error al procesar #{business.sitio_web}: #{e.message}"
+        end
+      end
+
+      redirect_to businesses_path, notice: 'Scraping completado exitosamente.'
+    end
+
     private
 
     def wait_for_element(driver, selector)
@@ -101,25 +127,6 @@ class BusinessesController < ApplicationController
           servicios: row[3]
         )
       end
-    end
-
-    def export_excel
-      workbook = WriteXLSX.new('tmp/empresas.xlsx')
-      worksheet = workbook.add_worksheet('Empresas')
-
-      # Encabezados
-      headers = ['Nombre', 'Correo Electrónico', 'Ciudad', 'Servicios', 'Sitio Web']
-      worksheet.write_row('A1', headers)
-
-      # Datos de empresas
-      row_index = 2
-      @businesses.each do |business|
-        data = [business.nombre, business.correo_electronico, business.ciudad, business.servicios, business.sitio_web]
-        worksheet.write_row("A#{row_index}", data)
-        row_index += 1
-      end
-
-      workbook
     end
 
 

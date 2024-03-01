@@ -1,0 +1,10 @@
+<% @businesses.each do |business| %>
+  <% nombre = business.nombre %>
+  <% correo_electronico = business.correo_electronico %>
+  <% ciudad = business.ciudad %>
+  <% servicios = business.servicios %>
+  <% sitio_web = business.sitio_web %>
+  <% telefono = business.telefono %>
+
+  <%= [nombre, correo_electronico, ciudad, [servicios.to_s], sitio_web, telefono].join(";")%>
+<% end %>
