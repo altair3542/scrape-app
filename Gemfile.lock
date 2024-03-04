@@ -99,10 +99,13 @@ GEM
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    domain_name (0.6.20240107)
     drb (2.2.1)
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    http-cookie (1.0.5)
+      domain_name (~> 0.5)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -126,10 +129,29 @@ GEM
       net-smtp
     marcel (1.0.3)
     matrix (0.4.2)
+    mechanize (2.10.0)
+      addressable (~> 2.8)
+      base64
+      domain_name (~> 0.5, >= 0.5.20190701)
+      http-cookie (~> 1.0, >= 1.0.3)
+      mime-types (~> 3.0)
+      net-http-digest_auth (~> 1.4, >= 1.4.1)
+      net-http-persistent (>= 2.5.2, < 5.0.dev)
+      nkf
+      nokogiri (~> 1.11, >= 1.11.2)
+      rubyntlm (~> 0.6, >= 0.6.3)
+      webrick (~> 1.7)
+      webrobots (~> 0.1.2)
+    mime-types (3.5.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2024.0206)
     mini_mime (1.1.5)
     minitest (5.22.2)
     msgpack (1.7.2)
     mutex_m (0.2.0)
+    net-http-digest_auth (1.4.1)
+    net-http-persistent (4.0.2)
+      connection_pool (~> 2.2)
     net-imap (0.4.10)
       date
       net-protocol
@@ -140,6 +162,7 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
+    nkf (0.2.0)
     nokogiri (1.16.2-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.16.2-arm-linux)
@@ -209,6 +232,7 @@ GEM
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
     ruby-ole (1.2.12.2)
+    rubyntlm (0.6.3)
     rubyzip (2.3.2)
     selenium-webdriver (4.18.1)
       base64 (~> 0.2)
@@ -261,6 +285,7 @@ GEM
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
     webrick (1.8.1)
+    webrobots (0.1.2)
     websocket (1.2.10)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -283,6 +308,8 @@ DEPENDENCIES
   debug
   importmap-rails
   jbuilder
+  mechanize
+  nokogiri
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)

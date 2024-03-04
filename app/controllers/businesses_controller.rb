@@ -1,3 +1,4 @@
+require 'mechanize'
 class BusinessesController < ApplicationController
   # app/controllers/empresas_controller.rb
   def index
@@ -76,31 +77,31 @@ class BusinessesController < ApplicationController
       redirect_to businesses_path
     end
 
-    def def scrape_websites_and_phone_numbers
 
+    def scrape_websites_and_phone_numbers
       @businesses = Business.all
-      agent = Mechanize.new
 
       @businesses.each do |business|
         begin
-          page = agent.get(business.sitio_web)
+          puts "Raspando la página de #{business.nombre}..."
 
-          # Extraer el número de teléfono usando una regex
-          telefono_match = page.body.match(/(\+34\s?)?(\d{9})/)
-          telefono = telefono_match[2] if telefono_match
+          # Verifica si el enlace es una URL absoluta
+          url = business.sitio_web.start_with?('http') ? business.sitio_web : "http://#{business.sitio_web}"
 
-          # Eliminar el código de país si está presente
-          telefono.sub!(/\+34\s?/, '') if telefono
+          page = scrape_page(url)
+          phone_number = extract_phone_number_from_page(page)
 
-          # Actualizar el campo de teléfono en la base de datos
-          business.update(telefono: telefono) if telefono
+          # Actualiza el número de teléfono en la base de datos
+          business.update(telefono: phone_number) if phone_number.present?
         rescue StandardError => e
-          puts "Error al procesar #{business.sitio_web}: #{e.message}"
+          puts "Error al raspar la página de #{business.nombre}: #{e.message}"
         end
       end
 
-      redirect_to businesses_path, notice: 'Scraping completado exitosamente.'
+      puts "Raspado de teléfonos completado. Los resultados se han actualizado en la base de datos."
+      redirect_to businesses_path
     end
+
 
     private
 
@@ -129,6 +130,36 @@ class BusinessesController < ApplicationController
       end
     end
 
+    def scrape_page(url)
+      agent = Mechanize.new
+      page = agent.get(url)
+      Nokogiri::HTML(page.body)
+    end
+
+    def extract_phone_number_from_page(page)
+      # Selecciona tanto el footer como el header utilizando selectores adecuados
+      footer = page.css('footer')
+      header = page.css('header')
+
+      # Combina el contenido del footer y del header
+      combined_content = footer.to_s + header.to_s
+
+      # Expresión regular para encontrar secuencias de números de 9 dígitos
+      phone_number_regex = /\b[6-9]\d{8}\b/
+
+      # Busca la expresión regular en el contenido combinado
+      match = combined_content.scan(phone_number_regex).flatten.compact
+
+      # Filtra los números que comienzan con 6, 7, 8 o 9
+      filtered_numbers = match.select { |number| ['6', '7', '8', '9'].include?(number[0]) }
+
+      # Retorna el primer número de teléfono encontrado después del filtrado
+      phone_number = filtered_numbers[0] if filtered_numbers.present?
+
+      phone_number
+    end
 
 
-end
+
+
+  end

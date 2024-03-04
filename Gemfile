@@ -44,6 +44,9 @@ gem 'roo'
 gem 'spreadsheet'
 gem 'webpacker'
 gem 'tailwindcss'
+gem 'mechanize'
+gem 'nokogiri'
+
 
 
 

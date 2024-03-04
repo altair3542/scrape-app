@@ -1,8 +1,8 @@
 <div class="container mx-auto p-6">
   <h1 class="text-4xl font-bold mb-6">Listado de Empresas</h1>
 
-  <%= form_tag(scrape_and_save_businesses_path, method: :post, class: 'mb-4') do %>
-    <%= submit_tag "Ejecutar Scraping", class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+  <%= form_tag(scrape_websites_and_phone_numbers_businesses_path, method: :post, class: 'mb-4') do %>
+    <%= submit_tag "Ejecutar Scraping", class: 'bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded' %>
   <% end %>
 
   <div class="flex mb-4">
@@ -13,7 +13,6 @@
   <div class="flex mb-4">
     <%= link_to "Scrapear Sitios Web y Teléfonos", scrape_websites_and_phone_numbers_businesses_path, class: 'bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded' %>
   </div>
-
 
   <section class="overflow-x-auto">
     <table class="min-w-full table-auto">
